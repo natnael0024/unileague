@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 class User(AbstractUser):
+    email = models.EmailField(unique=True)
     ROLE_CHOICES = (
         ("student", "Student"),
         ("admin", "Admin"),
@@ -27,6 +28,9 @@ class User(AbstractUser):
     total_xp = models.IntegerField(default=0)
     weekly_xp = models.IntegerField(default=0)
     streak_count = models.IntegerField(default=0)
+
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["username"]
 
     def __str__(self):
         return self.username

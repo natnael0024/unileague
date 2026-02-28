@@ -25,8 +25,7 @@ SECRET_KEY = 'django-insecure-b%g-*z22pizzk!b-2=vd-rs^l7ho3($k-e-4!^w4vg29f5#v7+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['localhost','127.0.0.1']
 
 # Application definition
 
@@ -146,6 +145,8 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 CORS_ALLOW_ALL_ORIGINS = True  # For development only
+
+CORS_ALLOW_CREDENTIALS = True
 
 from datetime import timedelta
 
