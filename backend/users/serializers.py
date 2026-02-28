@@ -1,6 +1,9 @@
 from rest_framework import serializers
 from .models import User
 from django.contrib.auth.password_validation import validate_password
+from rest_framework import serializers
+from django.contrib.auth import authenticate
+from rest_framework_simplejwt.tokens import RefreshToken
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
@@ -10,6 +13,8 @@ class RegisterSerializer(serializers.ModelSerializer):
         model = User
         fields = (
             "username",
+            "first_name",
+            "last_name",
             "email",
             "password",
             "password2",
@@ -29,24 +34,20 @@ class RegisterSerializer(serializers.ModelSerializer):
         return user
 
 
-from rest_framework import serializers
-from django.contrib.auth import authenticate
-from rest_framework_simplejwt.tokens import RefreshToken
-
 class LoginSerializer(serializers.Serializer):
-    username = serializers.CharField()
+    email = serializers.CharField()
     password = serializers.CharField(write_only=True)
 
     def validate(self, data):
-        username = data.get("username")
+        email = data.get("email")
         password = data.get("password")
 
-        if username and password:
-            user = authenticate(username=username, password=password)
+        if email and password:
+            user = authenticate(email=email, password=password)
             if user is None:
-                raise serializers.ValidationError("Invalid username or password.")
+                raise serializers.ValidationError("Invalid email or password.")
         else:
-            raise serializers.ValidationError("Both username and password are required.")
+            raise serializers.ValidationError("Both email and password are required.")
 
         data["user"] = user
         return data
